@@ -1,0 +1,829 @@
+/* ==========================================================================
+ *   WaifuDB Extension Stylesheet
+ *   ========================================================================== */
+
+/* --- Overlays & Modals --- */
+.waifudb-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0, 0, 0, 0.85);
+    z-index: 9999;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+.waifudb-overlay.waifudb-edit-overlay {
+    background: rgba(0, 0, 0, 0.92);
+    z-index: 10010;
+}
+
+.waifudb-modal {
+    background: #222;
+    color: #eee;
+    padding: 20px;
+    border-radius: 12px;
+    width: 680px;
+    max-width: 95vw;
+    max-height: 90vh;
+    overflow-y: auto;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    border: 1px solid #444;
+    box-sizing: border-box;
+}
+
+.waifudb-modal.waifudb-modal-edit {
+    width: 560px;
+    padding: 22px;
+    max-height: 90vh;
+    overflow-y: auto;
+}
+
+.waifudb-modal.waifudb-modal-trait {
+    width: 560px;
+}
+
+.waifudb-modal h2 {
+    margin: 0;
+    font-size: 20px;
+}
+
+.waifudb-modal-edit h2 {
+    font-size: 16px;
+}
+
+.waifudb-modal-meta {
+    font-size: 12px;
+    color: #888;
+}
+
+.waifudb-modal-meta strong {
+    color: #ccc;
+}
+
+.waifudb-modal-meta code {
+    font-size: 11px;
+}
+
+/* --- Layout Architecture --- */
+.waifudb-columns-container {
+    display: flex;
+    gap: 12px;
+    align-items: flex-start;
+}
+
+.waifudb-main-column {
+    flex: 1;
+    min-width: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+/* --- Dropdown Base Architecture --- */
+.waifudb-dropdown-root {
+    position: relative;
+    width: 100%;
+}
+
+.waifudb-dropdown-trigger {
+    width: 100%;
+    padding: 8px 10px;
+    background: #111;
+    color: #aaa;
+    border: 1px solid #555;
+    border-radius: 4px;
+    text-align: left;
+    cursor: pointer;
+    font-size: 13px;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    box-sizing: border-box;
+}
+
+.waifudb-dropdown-trigger-flat-bottom {
+    border-radius: 0 0 4px 4px;
+}
+
+.waifudb-dropdown-panel {
+    display: none;
+    position: fixed;
+    z-index: 10001;
+    background: #1a1a1a;
+    border: 1px solid #555;
+    border-radius: 4px;
+    box-shadow: 0 4px 16px rgba(0, 0, 0, 0.6);
+    flex-direction: column;
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.waifudb-dropdown-panel.waifudb-open {
+    display: flex;
+}
+
+.waifudb-dropdown-search {
+    padding: 8px 10px;
+    background: #111;
+    color: #fff;
+    border: none;
+    border-bottom: 1px solid #444;
+    outline: none;
+    font-size: 13px;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.waifudb-dropdown-list {
+    max-height: 220px;
+    overflow-y: auto;
+}
+
+.waifudb-dropdown-status {
+    padding: 4px 10px;
+    font-size: 11px;
+    color: #888;
+    border-bottom: 1px solid #333;
+}
+
+/* --- Sort Controls --- */
+.waifudb-dropdown-sortbar {
+    padding: 4px 8px;
+    border-bottom: 1px solid #333;
+    display: flex;
+    gap: 4px;
+}
+
+.waifudb-dropdown-sort-btn {
+    flex: 1;
+    padding: 3px 0;
+    font-size: 11px;
+    border-radius: 3px;
+    cursor: pointer;
+    border: none;
+    background: #2a2a2a;
+    color: #aaa;
+}
+
+.waifudb-dropdown-sort-btn.waifudb-active {
+    background: #4a90e2;
+    color: #fff;
+}
+
+/* --- Dropdown Rows --- */
+.waifudb-dropdown-clear-row {
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 12px;
+    color: #f88;
+    border-bottom: 1px solid #333;
+}
+
+.waifudb-dropdown-clear-row:hover {
+    background: #2a1a1a;
+}
+
+.waifudb-dropdown-empty-row {
+    padding: 8px 10px;
+    color: #666;
+    font-size: 12px;
+}
+
+.waifudb-dropdown-item-row {
+    padding: 7px 10px;
+    cursor: pointer;
+    font-size: 13px;
+    color: #eee;
+    background: transparent;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: 6px;
+}
+
+.waifudb-dropdown-item-row:hover {
+    background: #2a2a2a;
+}
+
+.waifudb-dropdown-item-row.waifudb-selected {
+    color: #4a90e2;
+    background: #1e2d3d;
+}
+
+.waifudb-dropdown-item-row-char {
+    padding: 4px 10px;
+    justify-content: flex-start;
+    gap: 8px;
+}
+
+.waifudb-dropdown-item-name {
+    flex: 1;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.waifudb-dropdown-item-name mark {
+    background: #4a90e2;
+    color: #fff;
+    border-radius: 2px;
+}
+
+.waifudb-dropdown-badge {
+    flex-shrink: 0;
+    font-size: 10px;
+    color: #666;
+}
+
+/* --- Tab Controller --- */
+.waifudb-tab-bar {
+    display: flex;
+    margin-bottom: 2px;
+    gap: 4px;
+}
+
+.waifudb-tab {
+    flex: 1;
+    padding: 5px 0;
+    font-size: 12px;
+    border-radius: 4px 4px 0 0;
+    cursor: pointer;
+    border: 1px solid #555;
+    border-bottom: none;
+    background: #111;
+    color: #666;
+}
+
+.waifudb-tab.waifudb-active {
+    background: #222;
+    color: #eee;
+}
+
+/* --- Shared Thumbnail Features --- */
+.waifudb-thumb {
+    width: 36px;
+    height: 36px;
+    object-fit: cover;
+    border-radius: 3px;
+    flex-shrink: 0;
+    background: #222;
+    border: 1px solid #333;
+    transition: opacity .1s, border-color .1s;
+    cursor: zoom-in;
+}
+
+.waifudb-thumb:hover {
+    opacity: 0.75;
+    border-color: #888;
+}
+
+.waifudb-flyout {
+    position: fixed;
+    display: none;
+    z-index: 10020;
+    border: 1px solid #444;
+    border-radius: 6px;
+    background: #111;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.8);
+    pointer-events: none;
+}
+
+/* --- Interactive Action Icons --- */
+.waifudb-star-icon {
+    flex-shrink: 0;
+    font-size: 14px;
+    line-height: 1;
+    color: #555;
+    padding: 0 2px;
+    transition: color .1s;
+    cursor: pointer;
+}
+
+.waifudb-star-icon:hover,
+.waifudb-star-icon.waifudb-is-favorite {
+    color: #f5c518;
+}
+
+/* New Super Favorite (My Waifus) Star */
+.waifudb-super-star-icon:hover,
+.waifudb-super-star-icon.waifudb-is-super-favorite {
+    color: #ff66b2; /* Vivid pink */
+}
+
+.waifudb-remove-fav-btn {
+    flex-shrink: 0;
+    font-size: 11px;
+    line-height: 1;
+    padding: 1px 4px;
+    color: #666;
+    background: #2a2a2a;
+    border: 1px solid #444;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: color .1s, background .1s, border-color .1s;
+}
+
+.waifudb-remove-fav-btn:hover {
+    color: #f88;
+    background: #3a2020;
+    border-color: #744;
+}
+
+/* --- Recent Sidebar Layout --- */
+.waifudb-recent-sidebar {
+    width: 180px;
+    flex-shrink: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.waifudb-recent-title,
+.waifudb-selection-title,
+.waifudb-overrides-title {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: .05em;
+    margin-bottom: 2px;
+}
+
+.waifudb-recent-pill {
+    width: 100%;
+    padding: 5px 8px;
+    background: #1a1a1a;
+    color: #bbb;
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 11px;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+.waifudb-recent-pill:hover {
+    background: #2a2a2a;
+}
+
+/* --- My Waifus (Super Favorites) Grid --- */
+.waifudb-my-waifus-container {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    margin-top: 4px;
+}
+
+.waifudb-my-waifus-grid {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 6px;
+}
+
+.waifudb-waifu-tile {
+    background: #1a1a1a;
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 4px 8px 4px 4px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+    transition: background 0.1s, border-color 0.1s;
+}
+
+.waifudb-waifu-tile:hover {
+    background: #2a2a2a;
+    border-color: #ff66b2;
+}
+
+.waifudb-waifu-tile-remove {
+    flex-shrink: 0;
+    font-size: 11px;
+    line-height: 1;
+    color: #666;
+    cursor: pointer;
+    transition: color .1s;
+}
+
+.waifudb-waifu-tile-remove:hover {
+    color: #f88;
+}
+
+.waifudb-waifu-tile-img {
+    width: 24px;
+    height: 24px;
+    object-fit: cover;
+    border-radius: 3px;
+    background: #222;
+}
+
+.waifudb-waifu-tile-name {
+    font-size: 11px;
+    color: #ddd;
+    max-width: 120px;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+}
+
+/* --- Selection Sub-System --- */
+.waifudb-selection-container {
+    display: flex;
+    flex-direction: column;
+    gap: 4px;
+}
+
+.waifudb-selection-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.waifudb-selection-title {
+    font-size: 11px;
+    margin-bottom: 0;
+}
+
+.waifudb-selection-clear-btn {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: #2a2a2a;
+    color: #888;
+    border: 1px solid #444;
+    border-radius: 3px;
+    cursor: pointer;
+}
+
+.waifudb-selection-list {
+    width: 100%;
+    min-height: 44px;
+    max-height: 130px;
+    overflow-y: auto;
+    background: #111;
+    border: 1px solid #555;
+    border-radius: 4px;
+    padding: 3px;
+    display: flex;
+    flex-direction: column;
+    gap: 2px;
+    box-sizing: border-box;
+}
+
+.waifudb-selection-row {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    padding: 3px 5px;
+    border-radius: 3px;
+    background: #1a1a1a;
+    border: 1px solid #333;
+}
+
+.waifudb-selection-row-name {
+    flex: 1;
+    font-size: 12px;
+    color: #ddd;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+}
+
+.waifudb-selection-btn-action {
+    flex-shrink: 0;
+    padding: 1px 5px;
+    font-size: 11px;
+    background: #2a2a2a;
+    color: #aaa;
+    border: 1px solid #444;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: color .1s, background .1s, border-color .1s;
+}
+
+.waifudb-selection-btn-action:hover {
+    color: #fff;
+    background: #3a3a3a;
+}
+
+.waifudb-selection-btn-remove {
+    color: #666;
+}
+
+.waifudb-selection-btn-remove:hover {
+    color: #f88;
+    background: #3a2020;
+    border-color: #744;
+}
+
+.waifudb-selection-footer-text {
+    font-size: 10px;
+    color: #666;
+}
+
+/* --- Checkbox Engine Layout --- */
+.waifudb-checkbox-container {
+    display: flex;
+    gap: 10px;
+    align-items: flex-start;
+}
+
+.waifudb-checkbox-grid {
+    flex: 1;
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+    font-size: 12px;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 4px;
+}
+
+.waifudb-overrides-box {
+    display: flex;
+    flex-direction: column;
+    gap: 6px;
+    border: 1px solid #444;
+    padding: 10px;
+    border-radius: 4px;
+    font-size: 12px;
+    min-width: 130px;
+    box-sizing: border-box;
+}
+
+.waifudb-overrides-box label {
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+/* --- Field Input Configurations --- */
+.waifudb-fields-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 8px;
+}
+
+.waifudb-fields-grid-secondary {
+    border-top: 1px solid #333;
+    margin-top: 4px;
+    padding-top: 4px;
+}
+
+.waifudb-field-group {
+    display: flex;
+    flex-direction: column;
+    gap: 3px;
+}
+
+.waifudb-field-group label {
+    font-size: 11px;
+    color: #888;
+}
+
+.waifudb-field-group input {
+    padding: 6px 8px;
+    background: #111;
+    color: #eee;
+    border: 1px solid #444;
+    border-radius: 4px;
+    font-size: 12px;
+    outline: none;
+}
+
+/* --- Trait Filter Specific --- */
+.waifudb-trait-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px;
+}
+
+.waifudb-trait-grid-label {
+    font-size: 11px;
+    color: #888;
+    margin-bottom: 4px;
+}
+
+.waifudb-trait-search-btn-wrapper {
+    display: flex;
+    align-items: flex-end;
+}
+
+.waifudb-trait-search-btn {
+    width: 100%;
+    padding: 8px;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.waifudb-trait-results-counter {
+    font-size: 12px;
+    color: #888;
+}
+
+/* --- Modal Footer & Utilities --- */
+.waifudb-footer-append {
+    font-size: 12px;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+    cursor: pointer;
+}
+
+.waifudb-loading-msg {
+    color: #aaa;
+    font-size: 12px;
+    text-align: center;
+}
+
+.waifudb-error-msg {
+    color: #f88;
+    font-size: 12px;
+    padding: 4px 0;
+}
+
+.waifudb-edit-status-msg {
+    font-size: 12px;
+    padding: 4px 0;
+}
+
+.waifudb-submit-btn {
+    width: 100%;
+    padding: 12px;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+}
+
+.waifudb-modal-actions-row {
+    display: flex;
+    gap: 8px;
+    margin-top: 4px;
+}
+
+.waifudb-modal-actions-row .waifudb-save {
+    flex: 1;
+    padding: 10px;
+    background: #4a90e2;
+    color: #fff;
+    border: none;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+.waifudb-modal-actions-row .waifudb-cancel {
+    padding: 10px 16px;
+    background: #333;
+    color: #aaa;
+    border: 1px solid #555;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 13px;
+}
+
+/* --- Selection Counter & Actions --- */
+.waifudb-selection-count {
+    font-size: 11px;
+    color: #888;
+    font-weight: normal;
+    margin-left: 4px;
+}
+
+.waifudb-selection-actions {
+    display: flex;
+    gap: 6px;
+}
+
+.waifudb-selection-undo-btn {
+    font-size: 10px;
+    padding: 2px 6px;
+    background: #2a2a2a;
+    color: #888;
+    border: 1px solid #444;
+    border-radius: 3px;
+    cursor: pointer;
+    transition: color 0.1s, background 0.1s;
+}
+
+.waifudb-selection-undo-btn:not(:disabled):hover {
+    color: #fff;
+    background: #3a3a3a;
+}
+
+.waifudb-selection-undo-btn:disabled {
+    opacity: 0.4;
+    cursor: not-allowed;
+}
+
+/* --- Live Preview Box --- */
+.waifudb-live-preview-box {
+    border: 1px solid #444;
+    border-radius: 4px;
+    padding: 8px;
+    background: #1a1a1a;
+}
+
+.waifudb-live-preview-title {
+    font-size: 10px;
+    color: #666;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 4px;
+}
+
+.waifudb-live-preview-text {
+    width: 100%;
+    background: #111;
+    color: #aaa;
+    border: 1px solid #333;
+    border-radius: 3px;
+    padding: 6px 8px;
+    font-size: 11px;
+    font-family: monospace;
+    resize: vertical;
+    box-sizing: border-box;
+    outline: none;
+}
+
+.waifudb-live-preview-text:focus {
+    border-color: #4a90e2;
+}
+
+/* --- Footer Actions Row --- */
+.waifudb-footer-actions {
+    display: flex;
+    gap: 8px;
+}
+
+.waifudb-copy-btn {
+    flex: 1;
+    padding: 12px;
+    background: #333;
+    color: #ddd;
+    border: 1px solid #555;
+    border-radius: 6px;
+    cursor: pointer;
+    font-size: 14px;
+    transition: background 0.1s, color 0.1s;
+}
+
+.waifudb-copy-btn:hover {
+    background: #444;
+    color: #fff;
+}
+
+.waifudb-copy-btn.waifudb-copied {
+    background: #2d4a2d;
+    color: #8f8;
+    border-color: #4a7a4a;
+}
+
+/* --- Clear All Filters Button --- */
+.waifudb-clear-filters-btn {
+    width: 100%;
+    padding: 6px;
+    background: #2a2a2a;
+    color: #888;
+    border: 1px solid #444;
+    border-radius: 4px;
+    cursor: pointer;
+    font-size: 12px;
+    transition: color 0.1s, background 0.1s;
+}
+
+.waifudb-clear-filters-btn:hover {
+    color: #f88;
+    background: #3a2020;
+    border-color: #744;
+}
+
+.waifudb-keyboard-focus { background: #1e2d3d; outline: 1px solid #4a90e2; }
+@media (max-width: 600px) {
+ .waifudb-columns-container, .waifudb-checkbox-container { flex-direction: column; }
+ .waifudb-recent-sidebar { width: 100%; }
+ .waifudb-main-column { width: 100%; }
+ .waifudb-modal { padding: 12px; }
+ .waifudb-trait-grid, .waifudb-fields-grid { grid-template-columns: minmax(0, 1fr); }
+}
+
+.waifudb-modal-close { align-self: flex-end; background: #333; color: #eee; border: 1px solid #555; border-radius: 4px; cursor: pointer; }
+
+/* Full landscape pictures: keep the complete frame visible. */
+.waifudb-thumb { width: 96px; height: auto; aspect-ratio: 2880 / 1216; object-fit: contain; }
+.waifudb-waifu-tile-img { width: 72px; height: auto; aspect-ratio: 2880 / 1216; object-fit: contain; }
